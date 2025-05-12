@@ -21,6 +21,8 @@ public class Login extends AppCompatActivity {
     EditText username, password;
     TextView erroText;
 
+    Criptografia crp = new Criptografia();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,46 +41,72 @@ public class Login extends AppCompatActivity {
 
     public void logar(View V) {
         objA.entBanco(this);
-        String nome = username.getText().toString();
+        String email = username.getText().toString();
         String senha = password.getText().toString();
+
         try {
-            objA.RS = objA.stmt.executeQuery("SELECT * FROM usuario WHERE email='"+nome+"' AND senha='"+senha+"'");
-            if(objA.RS.next()){
-                int idUsuarioLogado = objA.RS.getInt("idUsuario");
-                String nomeUsuarioLogado = objA.RS.getString("nome");
-                String sobrenomeUsuarioLogado = objA.RS.getString("sobrenome");
-                String emailUsuarioLogado = objA.RS.getString("email");
-                String celularUsuarioLogado = objA.RS.getString("celular");
-                String generoUsuarioLogado = objA.RS.getString("genero");
-                String senhaUsuarioLogado = objA.RS.getString("senha");
-                String dataCriacaoUsuarioLogado = objA.RS.getString("dataCriacao");
+            objA.RS = objA.stmt.executeQuery("SELECT * FROM usuario WHERE email='" + email + "'");
 
-                Usuario.setId(idUsuarioLogado);
-                Usuario.setNome(nomeUsuarioLogado);
-                Usuario.setSobrenome(sobrenomeUsuarioLogado);
-                Usuario.setEmail(emailUsuarioLogado);
-                Usuario.setCelular(celularUsuarioLogado);
-                Usuario.setGenero(generoUsuarioLogado);
-                Usuario.setSenha(senhaUsuarioLogado);
-                Usuario.setDataCriacao(dataCriacaoUsuarioLogado);
+            if (objA.RS.next()) {
+                String hashSalvo = objA.RS.getString("senha");
+                if (hashSalvo.startsWith("$2y$")) {
+                    hashSalvo = "$2a$" + hashSalvo.substring(4);
+                }
 
-                //Toast.makeText(getApplicationContext(), "Aprovado", Toast.LENGTH_SHORT).show();
-                Intent Intent = new Intent(Login.this, PaginaHome.class);
-                startActivity(Intent);
-                finish();
+                try {
+                    if (crp.verificarSenha(senha, hashSalvo)) {
+                        // Login bem-sucedido
+                        int idUsuarioLogado = objA.RS.getInt("idUsuario");
+                        String nomeUsuarioLogado = objA.RS.getString("nome");
+                        String sobrenomeUsuarioLogado = objA.RS.getString("sobrenome");
+                        String emailUsuarioLogado = objA.RS.getString("email");
+                        String celularUsuarioLogado = objA.RS.getString("celular");
+                        String generoUsuarioLogado = objA.RS.getString("genero");
+                        String senhaUsuarioLogado = objA.RS.getString("senha");
+                        String dataCriacaoUsuarioLogado = objA.RS.getString("dataCriacao");
+
+                        Usuario.setId(idUsuarioLogado);
+                        Usuario.setNome(nomeUsuarioLogado);
+                        Usuario.setSobrenome(sobrenomeUsuarioLogado);
+                        Usuario.setEmail(emailUsuarioLogado);
+                        Usuario.setCelular(celularUsuarioLogado);
+                        Usuario.setGenero(generoUsuarioLogado);
+                        Usuario.setSenha(senhaUsuarioLogado);
+                        Usuario.setDataCriacao(dataCriacaoUsuarioLogado);
+
+                        Intent intent = new Intent(Login.this, PaginaHome.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        erroText.setText("Usuário ou senha incorretos!");
+                        erroText.setVisibility(View.VISIBLE);
+                    }
+                } catch (Exception e) {
+                    Log.e("Login", "Erro ao verificar senha: " + e.getMessage(), e);
+                    erroText.setText("Erro interno ao verificar senha.");
+                    erroText.setVisibility(View.VISIBLE);
+                }
+
             } else {
-                //Toast.makeText(getApplicationContext(), "Entrada Não Aprovada",Toast.LENGTH_SHORT).show();
-                erroText.setText("Usuario ou Senha inválido!");
+                erroText.setText("Usuário não encontrado!");
                 erroText.setVisibility(View.VISIBLE);
             }
+
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            Log.e("Erro: ", ex.getMessage());
+            Log.e("Login", "Erro no banco de dados: " + ex.getMessage(), ex);
+            erroText.setText("Erro de conexão com o banco de dados.");
+            erroText.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Log.e("Login", "Erro inesperado: " + e.getMessage(), e);
+            erroText.setText("Erro inesperado no login.");
+            erroText.setVisibility(View.VISIBLE);
         }
     }
 
     public void irParaCadastrar (View V) {
         Intent intent = new Intent(Login.this, Cadastro.class);
         startActivity(intent);
+        finish();
     }
 }
