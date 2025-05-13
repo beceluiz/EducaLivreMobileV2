@@ -64,6 +64,7 @@ public class Login extends AppCompatActivity {
                         String generoUsuarioLogado = objA.RS.getString("genero");
                         String senhaUsuarioLogado = objA.RS.getString("senha");
                         String dataCriacaoUsuarioLogado = objA.RS.getString("dataCriacao");
+                        int statusUsuarioLogado = objA.RS.getInt("isAdmin");
 
                         Usuario.setId(idUsuarioLogado);
                         Usuario.setNome(nomeUsuarioLogado);
@@ -73,6 +74,7 @@ public class Login extends AppCompatActivity {
                         Usuario.setGenero(generoUsuarioLogado);
                         Usuario.setSenha(senhaUsuarioLogado);
                         Usuario.setDataCriacao(dataCriacaoUsuarioLogado);
+                        Usuario.setStatus(statusUsuarioLogado);
 
                         Intent intent = new Intent(Login.this, PaginaHome.class);
                         startActivity(intent);
