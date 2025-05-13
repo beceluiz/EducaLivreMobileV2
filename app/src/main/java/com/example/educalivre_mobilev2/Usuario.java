@@ -2,7 +2,23 @@ package com.example.educalivre_mobilev2;
 
 public class Usuario {
     private static int id;
-    private static String nome,sobrenome, email, celular, genero, senha, dataCriacao;
+    private static String nome;
+    private static String sobrenome;
+    private static String email;
+    private static String celular;
+    private static String genero;
+    private static String senha;
+    private static String dataCriacao;
+    private static int status;
+
+    public static int getStatus() {
+        return status;
+    }
+
+    public static void setStatus(int status) {
+        Usuario.status = status;
+    }
+
 
     public static int getId() {
         return id;

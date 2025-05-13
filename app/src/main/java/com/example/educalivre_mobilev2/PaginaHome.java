@@ -1,6 +1,8 @@
 package com.example.educalivre_mobilev2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,5 +25,11 @@ public class PaginaHome extends AppCompatActivity {
         });
 
         objA.entBanco(this);
+    }
+
+    public void irParaDashboardUsuario(View V) {
+        Intent intent = new Intent(PaginaHome.this, DashboardUsuario.class);
+        startActivity(intent);
+        finish();
     }
 }
