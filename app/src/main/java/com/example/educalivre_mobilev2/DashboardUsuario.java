@@ -1,5 +1,6 @@
 package com.example.educalivre_mobilev2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -110,5 +112,41 @@ public class DashboardUsuario extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+    public void apagarConta(View view) {
+
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmar Exclusão")
+                .setMessage("Tem certeza que deseja apagar sua conta? Essa ação não pode ser desfeita.")
+                .setPositiveButton("Sim, apagar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            ObjA.entBanco(DashboardUsuario.this);
+                            int linhasAfetadas = ObjA.stmt.executeUpdate("DELETE FROM Usuario WHERE idUsuario  = " + Usuario.getId() );
+                            if(linhasAfetadas > 0) {
+                                Toast.makeText(getApplicationContext(), "Conta apagada com sucesso!", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(DashboardUsuario.this, Login.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Não foi possivel apagar sua conta!", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(DashboardUsuario.this, PaginaHome.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            Log.e("Erro: ", ex.getMessage());
+                        }
+
+
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 }
