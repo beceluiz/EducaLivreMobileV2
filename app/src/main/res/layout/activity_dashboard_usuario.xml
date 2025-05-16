@@ -149,8 +149,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:backgroundTint="#FF0000"
-            android:textColor="#FFFFFF"
-            android:text="Apagar Conta" />
+            android:onClick="apagarConta"
+            android:text="Apagar Conta"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
   </ScrollView >
