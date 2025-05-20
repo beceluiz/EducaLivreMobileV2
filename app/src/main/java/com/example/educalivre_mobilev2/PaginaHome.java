@@ -28,7 +28,13 @@ public class PaginaHome extends AppCompatActivity {
     }
 
     public void irParaDashboardUsuario(View V) {
-        Intent intent = new Intent(PaginaHome.this, DashboardUsuario.class);
+        Intent intent = new Intent(getApplicationContext(), DashboardUsuario.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void irParaSimulado(View V) {
+        Intent intent = new Intent(getApplicationContext(), Simulado.class);
         startActivity(intent);
         finish();
     }

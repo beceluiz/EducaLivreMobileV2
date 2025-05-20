@@ -9,9 +9,16 @@
     tools:context=".PaginaHome" >
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="irParaDashboardUsuario"
-        android:text="Button" />
+        android:text="Usuario" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="irParaSimulado"
+        android:text="Simulado" />
 </LinearLayout>

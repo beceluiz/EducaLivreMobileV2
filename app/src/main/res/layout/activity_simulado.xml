@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Simulado">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título da Questão -->
+        <TextView
+            android:id="@+id/textTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Título da Questão"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Contexto da Questão -->
+        <TextView
+            android:id="@+id/textContexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contexto da Questão"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Imagem da Questão (se houver) -->
+        <ImageView
+            android:id="@+id/imageViewQuestao"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="fitCenter"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <!-- Alternativas -->
+        <RadioGroup
+            android:id="@+id/radioGroupAlternativas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Botão Continuar -->
+        <Button
+            android:id="@+id/buttonContinuar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continuar"
+            android:backgroundTint="@color/green"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>
