@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.noties.markwon.Markwon;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +28,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Simulado extends AppCompatActivity {
-    private TextView textTitulo, textContexto;
+    private TextView textTitulo, textContexto, txtDisciplina, txtIntroAlternativas;
     private ImageView imageView;
     private RadioGroup radioGroup;
     private Button buttonResponder;
@@ -53,6 +54,8 @@ public class Simulado extends AppCompatActivity {
         imageView = findViewById(R.id.imageViewQuestao);
         radioGroup = findViewById(R.id.radioGroupAlternativas);
         buttonResponder = findViewById(R.id.buttonContinuar);
+        txtDisciplina = findViewById(R.id.txtDisciplina);
+        txtIntroAlternativas = findViewById(R.id.txtIntroAlternativas);
 
         carregarQuestoes();
 
@@ -81,7 +84,6 @@ public class Simulado extends AppCompatActivity {
                                 Toast.makeText(Simulado.this, "Nenhuma questão encontrada.", Toast.LENGTH_LONG).show();
                                 return;
                             }
-
                             mostrarQuestao();
                         } else {
                             String erro = "Código HTTP: " + response.code();
@@ -117,7 +119,16 @@ public class Simulado extends AppCompatActivity {
             Questao questao = questoes.get(questaoAtual);
 
             textTitulo.setText(questao.getTitle());
-            textContexto.setText(questao.getContext());
+            //textContexto.setText(questao.getContext());
+            //txtAnoProva.setText("Enem " + questao.getYear());
+            txtDisciplina.setText(questao.getDiscipline());
+           // txtIndexQuestao.setText("Questão " + questao.getIndex());
+            txtIntroAlternativas.setText(questao.getAlternativesIntroduction() + ":");
+
+            final Markwon markwon = Markwon.create(this);
+            markwon.setMarkdown(textContexto, questao.getContext());
+
+
 
             radioGroup.removeAllViews();
 
