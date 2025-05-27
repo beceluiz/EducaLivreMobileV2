@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -18,7 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import io.noties.markwon.Markwon;
 import retrofit2.Call;
@@ -32,10 +35,20 @@ public class Simulado extends AppCompatActivity {
     private ImageView imageView;
     private RadioGroup radioGroup;
     private Button buttonResponder;
+    private ProgressBar progressBarSimulado;
 
     private List<Questao> questoes;
     private int questaoAtual = 0;
     private int acertos = 0;
+
+    // Variáveis para paginação e anos disponíveis
+    Random random = new Random();
+    int[] anosProvasDisponiveis = {2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023};
+    private int anoEscolhido;
+    private int limit = 50; // Número de questões por requisição
+    private int offset = 0;
+    private boolean carregandoQuestoes = false;
+    private int totalQuestoes = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,61 +70,129 @@ public class Simulado extends AppCompatActivity {
         txtDisciplina = findViewById(R.id.txtDisciplina);
         txtIntroAlternativas = findViewById(R.id.txtIntroAlternativas);
 
-        carregarQuestoes();
+        progressBarSimulado = findViewById(R.id.progressBarSimulado);
+        if (progressBarSimulado != null) {
+            progressBarSimulado.setVisibility(View.VISIBLE);
+        }
+
+        questoes = new ArrayList<>();
+        anoEscolhido = anosProvasDisponiveis[sortearAnoProva()];
+        carregarTodasQuestoes();
 
         buttonResponder.setOnClickListener(view -> verificarResposta());
     }
 
-    private void carregarQuestoes() {
+
+    private void carregarTodasQuestoes() {
+        if (carregandoQuestoes) return;
+
+        carregandoQuestoes = true;
+
         try {
+            // Create Retrofit with the correct base URL
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://api.enem.dev/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
             ApiService api = retrofit.create(ApiService.class);
-            Call<RespostaAPI> call = api.listarQuestoes();
+            Call<RespostaAPI> call = api.listarQuestoesPaginadas(anoEscolhido, limit, offset);
 
             call.enqueue(new Callback<RespostaAPI>() {
                 @Override
                 public void onResponse(Call<RespostaAPI> call, Response<RespostaAPI> response) {
                     try {
                         if (response.isSuccessful() && response.body() != null) {
-                            questoes = response.body().getQuestions();
+                            RespostaAPI resposta = response.body();
+                            Metadata metadata = resposta.getMetadata();
+                            List<Questao> novasQuestoes = resposta.getQuestions();
 
-                            if (questoes == null || questoes.isEmpty()) {
-                                Log.e("API_RESPONSE", "Lista de questões vazia ou nula");
-                                Toast.makeText(Simulado.this, "Nenhuma questão encontrada.", Toast.LENGTH_LONG).show();
-                                return;
+                            if (novasQuestoes != null && !novasQuestoes.isEmpty()) {
+                                questoes.addAll(novasQuestoes);
+                                totalQuestoes = metadata.getTotal();
+
+                                Log.d("PAGINACAO", "Carregadas " + novasQuestoes.size() +
+                                        " questões. Total atual: " + questoes.size() +
+                                        " de " + totalQuestoes);
+
+                                // Verifica se há mais questões para carregar
+                                if (metadata.isHasMore() && questoes.size() < totalQuestoes) {
+                                    offset += limit;
+                                    carregandoQuestoes = false;
+                                    carregarTodasQuestoes(); // Carrega próxima página
+                                } else {
+                                    // Todas as questões foram carregadas
+                                    finalizarCarregamento();
+                                }
+                            } else {
+                                finalizarCarregamento();
                             }
-                            mostrarQuestao();
                         } else {
                             String erro = "Código HTTP: " + response.code();
                             Log.e("API_RESPONSE", "Erro na resposta da API: " + erro);
-                            Toast.makeText(Simulado.this, "Erro ao carregar questões. " + erro, Toast.LENGTH_LONG).show();
+                            mostrarErro("Erro ao carregar questões. " + erro);
                         }
                     } catch (Exception e) {
                         Log.e("API_RESPONSE", "Erro ao processar resposta", e);
-                        Toast.makeText(Simulado.this, "Erro ao processar dados: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        mostrarErro("Erro ao processar dados: " + e.getMessage());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RespostaAPI> call, Throwable t) {
                     Log.e("API_RESPONSE", "Falha ao conectar com a API", t);
-                    Toast.makeText(Simulado.this, "Falha de conexão: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    mostrarErro("Falha de conexão: " + t.getMessage());
                 }
             });
         } catch (Exception e) {
             Log.e("API_INIT", "Erro ao inicializar Retrofit", e);
-            Toast.makeText(Simulado.this, "Erro ao inicializar requisição: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            mostrarErro("Erro ao inicializar requisição: " + e.getMessage());
+        }
+    }
+
+    private void finalizarCarregamento() {
+        carregandoQuestoes = false;
+
+        if (progressBarSimulado != null) {
+            progressBarSimulado.setVisibility(View.GONE);
+        }
+
+        if (questoes.isEmpty()) {
+            Toast.makeText(this, "Nenhuma questão encontrada.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        Log.d("CARREGAMENTO", "Carregamento finalizado. Total de questões: " + questoes.size());
+        Toast.makeText(this, "Carregadas " + questoes.size() + " questões do ENEM " + anoEscolhido + "!", Toast.LENGTH_SHORT).show();
+
+        // Embaralhar as questões se desejar
+        // Collections.shuffle(questoes);
+
+        mostrarQuestao();
+    }
+
+    private void mostrarErro(String mensagem) {
+        carregandoQuestoes = false;
+
+        if (progressBarSimulado != null) {
+            progressBarSimulado.setVisibility(View.GONE);
+        }
+
+        Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
+
+        // Se já tiver algumas questões carregadas, continue com elas
+        if (!questoes.isEmpty()) {
+            mostrarQuestao();
+        } else {
+            finish();
         }
     }
 
     private void mostrarQuestao() {
         try {
             if (questoes == null || questaoAtual >= questoes.size()) {
-                Toast.makeText(this, "Fim do simulado. Acertos: " + acertos + "/" + (questoes != null ? questoes.size() : 0), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Fim do simulado. Acertos: " + acertos + "/" + questoes.size(), Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
@@ -119,15 +200,18 @@ public class Simulado extends AppCompatActivity {
             Questao questao = questoes.get(questaoAtual);
 
             textTitulo.setText(questao.getTitle());
-            //textContexto.setText(questao.getContext());
-            //txtAnoProva.setText("Enem " + questao.getYear());
             txtDisciplina.setText(questao.getDiscipline());
-           // txtIndexQuestao.setText("Questão " + questao.getIndex());
             txtIntroAlternativas.setText(questao.getAlternativesIntroduction() + ":");
 
             final Markwon markwon = Markwon.create(this);
-            markwon.setMarkdown(textContexto, questao.getContext());
 
+            String contextoStr = questao.getContext();
+
+            if (contextoStr.startsWith("![](")) {
+                textContexto.setText("");
+            } else {
+                markwon.setMarkdown(textContexto, questao.getContext());
+            }
 
 
             radioGroup.removeAllViews();
@@ -145,9 +229,12 @@ public class Simulado extends AppCompatActivity {
             } else {
                 imageView.setVisibility(View.GONE);
             }
+
+//            setTitle("Questão " + (questaoAtual + 1) + " de " + questoes.size() + " - ENEM " + anoEscolhido);
+
         } catch (Exception e) {
             Log.e("MOSTRAR_QUESTAO", "Erro ao exibir questão", e);
-            Toast.makeText(this, "Erro ao exibir questão: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Erro ao exibir questão: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -177,5 +264,9 @@ public class Simulado extends AppCompatActivity {
             Log.e("VERIFICAR_RESPOSTA", "Erro ao verificar resposta", e);
             Toast.makeText(this, "Erro ao verificar resposta: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public int sortearAnoProva() {
+        return random.nextInt(anosProvasDisponiveis.length);
     }
 }
