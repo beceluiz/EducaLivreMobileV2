@@ -24,7 +24,7 @@ public class Acessa {
 
             // Carrega o driver
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            Toast.makeText(ctx.getApplicationContext(), "Driver carregado com sucesso", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ctx.getApplicationContext(), "Driver carregado com sucesso", Toast.LENGTH_SHORT).show();
         } catch (ClassNotFoundException e) {
             Toast.makeText(ctx.getApplicationContext(), "Driver não encontrado", Toast.LENGTH_SHORT).show();
             Log.e("Conexao", "Classe do driver não encontrada", e);
@@ -44,9 +44,9 @@ public class Acessa {
             // Estabelece conexão
             con = DriverManager.getConnection(url, user, pass);
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            Toast.makeText(ctx.getApplicationContext(), "Conectado ao banco de dados", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ctx.getApplicationContext(), "Conectado ao banco de dados", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
-            Toast.makeText(ctx.getApplicationContext(), "Erro ao conectar ao banco de dados", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ctx.getApplicationContext(), "Erro ao conectar ao banco de dados", Toast.LENGTH_SHORT).show();
             Log.e("Conexao", "Erro de SQL ao conectar", e);
             return null;
         }
