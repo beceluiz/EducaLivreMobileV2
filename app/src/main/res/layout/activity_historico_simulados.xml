@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".HistoricoSimulados">
+
+    <!-- Cabeçalho -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/design_default_color_primary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📊 Histórico de Simulados"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acompanhe seu progresso e revise seus simulados"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- Conteúdo Principal -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- RecyclerView para lista de simulados -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewHistorico"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:visibility="gone" />
+
+        <!-- ProgressBar para carregamento -->
+        <ProgressBar
+            android:id="@+id/progressBarCarregando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Mensagem quando não há simulados -->
+        <LinearLayout
+            android:id="@+id/txtSemSimulados"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📝"
+                android:textSize="64sp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nenhum simulado realizado"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/design_default_color_primary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Realize seu primeiro simulado para acompanhar seu progresso!"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"
+                android:textAlignment="center"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

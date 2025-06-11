@@ -160,6 +160,7 @@ public class Simulado extends AppCompatActivity {
 
         if (progressBarSimulado != null) {
             progressBarSimulado.setVisibility(View.GONE);
+            buttonResponder.setVisibility(View.VISIBLE);
         }
 
         if (questoes.isEmpty()) {

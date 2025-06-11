@@ -1,24 +1,410 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".PaginaHome" >
+    android:background="@color/gray_light"
+    tools:context=".PaginaHome">
 
-    <Button
-        android:id="@+id/button2"
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="irParaDashboardUsuario"
-        android:text="Usuario" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="irParaSimulado"
-        android:text="Simulado" />
-</LinearLayout>
+        <!-- Header fixo -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:padding="16dp">
+
+            <!-- Logo -->
+            <TextView
+                android:id="@+id/tvLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="EducaLivre"
+                android:textColor="@color/green"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Ícone de perfil -->
+            <ImageView
+                android:id="@+id/ivPerfil"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_background_green"
+                android:contentDescription="Perfil do usuário"
+                android:onClick="irParaDashboardUsuario"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_person" />
+
+        </RelativeLayout>
+
+        <!-- Container principal com padding -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Mensagem de boas-vindas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_background"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/tvBoasVindas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Olá, João! 👋"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pronto para mais um dia de estudos?"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <!-- Estatísticas rápidas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background"
+                    android:elevation="2dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:id="@+id/txtSimuladosFeitos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12"
+                        android:textColor="@color/green"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Simulados"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background"
+                    android:elevation="2dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:id="@+id/txtAproveitamento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="85%"
+                        android:textColor="@color/blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Aproveitamento"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Título da seção -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O que você quer fazer hoje?"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Botões principais -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Botão Perfil do Usuário -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="3dp"
+                    android:gravity="center_vertical"
+                    android:onClick="irParaDashboardUsuario"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle_background_green"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_person"
+                        android:contentDescription="Ícone perfil" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perfil do Usuário"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Visualizar e editar informações pessoais"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:contentDescription="Seta" />
+
+                </LinearLayout>
+
+                <!-- Botão Simulados -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="3dp"
+                    android:gravity="center_vertical"
+                    android:onClick="irParaSimulado"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle_background_blue"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_quiz"
+                        android:contentDescription="Ícone simulado" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Simulados"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pratique com questões e avalie seu conhecimento"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:contentDescription="Seta" />
+
+                </LinearLayout>
+
+                <!-- Botão Videoaulas -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="3dp"
+                    android:gravity="center_vertical"
+                    android:onClick="irParaVideoaulas"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle_background_purple"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_play"
+                        android:contentDescription="Ícone videoaulas" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Videoaulas"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Acesse conteúdos em vídeo no nosso site"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_external_link"
+                        android:contentDescription="Link externo" />
+
+                </LinearLayout>
+
+                <!-- Botão Histórico de Simulados -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="3dp"
+                    android:gravity="center_vertical"
+                    android:onClick="irParHistotricoSimulados"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle_background_gray"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_history"
+                        android:contentDescription="Ícone histórico" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Histórico de Simulados"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Veja seus resultados anteriores e evolução"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:contentDescription="Seta" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Seção adicional - Dica do dia -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_background_green"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💡 Dica do dia"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estude um pouco todos os dias. A constância é mais importante que a quantidade!"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

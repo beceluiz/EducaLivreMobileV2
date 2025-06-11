@@ -94,7 +94,6 @@ public class Resultados extends AppCompatActivity {
         txtPercentual.setText(String.format("%.1f%%", percentual));
         txtAno.setText("ENEM " + anoProva);
 
-        // Definir status baseado no percentual
         String status;
         if (percentual >= 70) {
             status = "Excelente!";
