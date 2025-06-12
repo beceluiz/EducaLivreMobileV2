@@ -83,4 +83,16 @@ public class Usuario {
     public static void setNome(String nome) {
         Usuario.nome = nome;
     }
+
+    public static void limparDados() {
+        id = 0;
+        nome = null;
+        sobrenome = null;
+        email = null;
+        celular = null;
+        genero = null;
+        senha = null;
+        dataCriacao = null;
+        status = 0;
+    }
 }

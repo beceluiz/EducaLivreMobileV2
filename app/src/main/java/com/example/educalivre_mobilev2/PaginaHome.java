@@ -95,13 +95,13 @@ public class PaginaHome extends AppCompatActivity {
 
 
     public void irParaDashboardUsuario(View v) {
-        Intent intent = new Intent(getApplicationContext(), DashboardUsuario.class);
+        Intent intent = new Intent(PaginaHome.this, DashboardUsuario.class);
         startActivity(intent);
         finish();
     }
 
 
-    public void irParaSimulado(View view) {
+    public void irParaSimulado(View v) {
 
         new AlertDialog.Builder(this)
                 .setTitle("Iniciar novo Simulado?")
@@ -109,7 +109,7 @@ public class PaginaHome extends AppCompatActivity {
                 .setPositiveButton("Sim, Iniciar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getApplicationContext(), Simulado.class);
+                        Intent intent = new Intent(PaginaHome.this, Simulado.class);
                         startActivity(intent);
                         finish();
                     }
@@ -136,6 +136,24 @@ public class PaginaHome extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    public void logout(View V) {
+        new AlertDialog.Builder(this)
+                .setTitle("Sair da sua conta?")
+                .setMessage("Tem certeza que deseja sair da sua conta? Você precisará fazer login novamente.")
+                .setPositiveButton("Sim, Sair", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Usuario.limparDados();
+                        Intent intent = new Intent(PaginaHome.this, Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     @Override

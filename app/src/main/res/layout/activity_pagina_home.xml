@@ -14,6 +14,8 @@
         android:orientation="vertical">
 
         <!-- Header fixo -->
+
+        <!-- Container principal com padding -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -33,22 +35,20 @@
                 android:textStyle="bold" />
 
             <!-- Ícone de perfil -->
-            <ImageView
-                android:id="@+id/ivPerfil"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/circle_background_green"
-                android:contentDescription="Perfil do usuário"
-                android:onClick="irParaDashboardUsuario"
-                android:padding="12dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_person" />
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="12dp"
+                android:backgroundTint="#EF1B0A"
+                android:onClick="logout"
+                android:text="Sair" />
 
         </RelativeLayout>
 
-        <!-- Container principal com padding -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
