@@ -83,10 +83,10 @@ Escolha um emulador ou dispositivo físico
 
 O app será instalado e aberto automaticamente
 
-🌐 Outras versões do EducaLivre
-🌍 Versão Web
+## 📱 Acesse outras versões
 
-💻 Versão Desktop (Admin)
+- [Versão WEB](https://github.com/beceluiz/EducaLivre-WEB)
+- [Versão Desktop (Admin)](https://github.com/beceluiz/EducaLivre-Desktop)
 
 📌 Observações
 O app conecta diretamente ao banco SQL Server via JDBC, portanto o servidor precisa estar acessível via IP.
